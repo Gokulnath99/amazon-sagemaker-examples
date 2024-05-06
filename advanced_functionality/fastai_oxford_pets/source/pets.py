@@ -81,7 +81,7 @@ def input_fn(request_body, content_type=JPEG_CONTENT_TYPE):
         return img
     # process a URL submitted to the endpoint
     if content_type == JSON_CONTENT_TYPE:
-        img_request = requests.get(request_body["url"], stream=True)
+        img_request = requests.get(request_body["url"], stream=True, timeout=60)
         img = open_image(io.BytesIO(img_request.content))
         return img
     raise Exception("Requested unsupported ContentType in content_type: {}".format(content_type))
