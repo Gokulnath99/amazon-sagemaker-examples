@@ -1,9 +1,9 @@
 import bz2
-import random
 import tempfile
 import urllib.request
 
 import boto3
+import secrets
 
 
 def load_mnist(train_split=0.8, seed=42):
@@ -21,8 +21,8 @@ def load_mnist(train_split=0.8, seed=42):
         lines = content.strip().split("\n")
         n = sum(1 for line in lines)
         indices = list(range(n))
-        random.seed(seed)
-        random.shuffle(indices)
+        secrets.SystemRandom().seed(seed)
+        secrets.SystemRandom().shuffle(indices)
         train_indices = set(indices[: int(n * 0.8)])
 
         with tempfile.NamedTemporaryFile(mode="w", delete=False) as train_file:

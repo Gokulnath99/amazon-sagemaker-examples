@@ -1,6 +1,5 @@
 """This module implements concrete agent controllers for the rollout worker"""
 import os
-import random
 
 import numpy as np
 import rospkg
@@ -18,6 +17,7 @@ from markov.reset.constants import AgentInfo
 from markov.rospy_wrappers import ServiceProxyWrapper
 from markov.track_geom.constants import SPAWN_SDF_MODEL, SPAWN_URDF_MODEL, ObstacleDimensions
 from markov.track_geom.track_data import TrackData
+import secrets
 
 
 class ObstaclesCtrl(AgentCtrlInterface):
@@ -98,7 +98,7 @@ class ObstaclesCtrl(AgentCtrlInterface):
             # Perturb to achieve randomness
             if self.randomize:
                 i_obstacle = list(range(self.num_obstacles))
-                random.shuffle(i_obstacle)
+                secrets.SystemRandom().shuffle(i_obstacle)
                 for i in i_obstacle:
                     lo = (
                         obstacle_start_dist
@@ -111,11 +111,11 @@ class ObstaclesCtrl(AgentCtrlInterface):
                         else obstacle_dists[i + 1] - self.min_obstacle_dist
                     )
                     if lo < hi:
-                        obstacle_dists[i] = random.uniform(lo, hi)
+                        obstacle_dists[i] = secrets.SystemRandom().uniform(lo, hi)
 
                 # Select a random lane for each obstacle
                 for _ in obstacle_dists:
-                    use_outer_lane = random.choice((False, True))
+                    use_outer_lane = secrets.choice((False, True))
                     obstacle_lanes.append(lane_choices[use_outer_lane])
             else:
                 # Alternate between lanes for each obstacle

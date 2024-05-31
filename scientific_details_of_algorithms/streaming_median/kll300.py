@@ -9,7 +9,7 @@
 # or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 import sys
-from random import randint
+import secrets
 
 
 class KLL300:
@@ -51,7 +51,7 @@ class KLL300:
 class Compactor(list):
     def compact(self):
         self.sort()
-        offset = randint(0, 1)
+        offset = secrets.SystemRandom().randint(0, 1)
         for item in self[offset::2]:
             yield item
         self.clear()

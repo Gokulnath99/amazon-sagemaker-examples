@@ -1,7 +1,7 @@
 import queue
-import random
 
 import numpy as np
+import secrets
 
 
 def get_knapsack_solution_simple(weights, values, c_max, penalty, debug=False):
@@ -487,7 +487,7 @@ if __name__ == "__main__":
     values = [92, 57, 49, 68, 60, 43, 67, 84, 87, 72]
     volumes = []
     for x in range(0, len(weights)):
-        volumes.append(random.randint(1, 100))
+        volumes.append(secrets.SystemRandom().randint(1, 100))
 
     c_weight_max = 200
     c_vol_max = 200

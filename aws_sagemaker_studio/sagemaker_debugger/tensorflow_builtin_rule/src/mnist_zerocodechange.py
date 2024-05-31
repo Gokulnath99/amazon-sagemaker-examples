@@ -9,11 +9,11 @@ For more information, please refer to https://github.com/awslabs/sagemaker-debug
 # Standard Library
 import argparse
 import logging
-import random
 
 # Third Party
 import numpy as np
 import tensorflow as tf
+import secrets
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -41,7 +41,7 @@ args = parser.parse_args()
 if args.random_seed:
     tf.set_random_seed(2)
     np.random.seed(2)
-    random.seed(12)
+    secrets.SystemRandom().seed(12)
 
 
 def cnn_model_fn(features, labels, mode):

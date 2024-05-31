@@ -5,7 +5,6 @@ import bisect
 import json
 import logging
 import os
-import random
 import time
 from collections import Counter
 from itertools import chain, islice
@@ -14,6 +13,7 @@ import mxnet as mx
 import numpy as np
 from mxnet import autograd, gluon, nd
 from mxnet.io import DataBatch, DataDesc, DataIter
+import secrets
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -237,7 +237,7 @@ class BucketSentenceIter(DataIter):
     def reset(self):
         """Resets the iterator to the beginning of the data."""
         self.curr_idx = 0
-        random.shuffle(self.idx)
+        secrets.SystemRandom().shuffle(self.idx)
         for i in range(len(self.data)):
             data, labels = self.data[i], self.labels[i]
             p = np.random.permutation(len(data))

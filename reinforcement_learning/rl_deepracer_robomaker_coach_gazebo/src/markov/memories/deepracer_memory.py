@@ -1,7 +1,6 @@
 import ast
 import math
 import pickle
-import random
 from copy import deepcopy
 from typing import List, Tuple, Union
 
@@ -12,6 +11,7 @@ from rl_coach.filters.filter import InputFilter
 from rl_coach.logger import screen
 from rl_coach.memories.memory import Memory, MemoryGranularity, MemoryParameters
 from rl_coach.utils import ProgressBar, ReaderWriterLock
+import secrets
 
 
 class DeepRacerMemoryParameters(MemoryParameters):
@@ -138,7 +138,7 @@ class DeepRacerMemory(Memory):
         # that empty last episode, as we are about to shuffle the memory, and we don't want it to be shuffled in
         self.remove_last_episode(lock=False)
 
-        random.shuffle(self._buffer)
+        secrets.SystemRandom().shuffle(self._buffer)
         self.transitions = [t for e in self._buffer for t in e.transitions]
 
         # create a new Episode for the next transitions to be placed into
@@ -156,7 +156,7 @@ class DeepRacerMemory(Memory):
         :return: a batch (list) of selected transitions from the replay buffer
         """
         shuffled_transition_indices = list(range(self.last_training_set_transition_id))
-        random.shuffle(shuffled_transition_indices)
+        secrets.SystemRandom().shuffle(shuffled_transition_indices)
 
         # The last batch drawn will usually be < batch_size (=the size variable)
         for i in range(math.ceil(len(shuffled_transition_indices) / size)):

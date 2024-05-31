@@ -3,10 +3,10 @@ Downsample frames using downsample rate.
 """
 
 import os
-import random
 
 from shared import db, log, s3_accessor
 from shared.constants import BatchMetadataTableAttributes, BatchMetadataType
+import secrets
 
 batch_processing_bucket_name = os.getenv("BATCH_PROCESSING_BUCKET_ID")
 
@@ -16,7 +16,7 @@ def down_sample_to_proportion(rows, percentile=100):
     # TODO:  Selection should be based on frames in DDB table
     sampled_size = int((percentile / 100) * len(rows))
 
-    return random.sample(rows, sampled_size)
+    return secrets.SystemRandom().sample(rows, sampled_size)
 
 
 def lambda_handler(event, context):

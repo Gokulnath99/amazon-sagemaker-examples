@@ -10,7 +10,6 @@ If you use an official SageMaker Framework container (i.e. AWS Deep Learning Con
 
 # Standard Library
 import argparse
-import random
 
 # Third Party
 import numpy as np
@@ -21,6 +20,7 @@ import tensorflow.compat.v2 as tf
 from tensorflow.keras.applications.resnet50 import ResNet50
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.utils import to_categorical
+import secrets
 
 
 def train(batch_size, epoch, model, hook):
@@ -69,7 +69,7 @@ def main():
     if args.random_seed:
         tf.random.set_seed(2)
         np.random.seed(2)
-        random.seed(12)
+        secrets.SystemRandom().seed(12)
 
     mirrored_strategy = tf.distribute.MirroredStrategy()
     with mirrored_strategy.scope():

@@ -4,7 +4,6 @@ import json
 import logging
 import os
 import pstats
-import random
 import re
 import shutil
 import signal
@@ -41,6 +40,7 @@ from markov.log_handler.constants import (
 from markov.log_handler.deepracer_exceptions import GenericException
 from markov.log_handler.exception_handler import log_and_exit, simapp_exit_gracefully
 from markov.log_handler.logger import Logger
+import secrets
 
 logger = Logger(__name__, logging.INFO).get_logger()
 
@@ -99,7 +99,7 @@ def cancel_simulation_job(backoff_time_sec=1.0, max_retry_attempts=5):
             return
         if try_count > max_retry_attempts:
             simapp_exit_gracefully()
-        backoff_time = (pow(try_count, 2) + random.random()) * backoff_time_sec
+        backoff_time = (pow(try_count, 2) + secrets.SystemRandom().random()) * backoff_time_sec
         time.sleep(backoff_time)
 
 
