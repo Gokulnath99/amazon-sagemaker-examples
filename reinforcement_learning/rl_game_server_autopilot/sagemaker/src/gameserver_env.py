@@ -1,11 +1,11 @@
 import time
-from time import gmtime, strftime
 
 import boto3
 import gym
 import numpy as np
 import requests
-from gym.spaces import Box, Discrete
+from gym.spaces import Box
+from security import safe_requests
 
 cloudwatch_cli = boto3.client("cloudwatch", region_name="us-west-2")
 
@@ -63,7 +63,7 @@ class GameServerEnv(gym.Env):
             print("quering matchmaking service for current demand, curr_demand")
             try:
                 gs_url = self.gs_inventory_url
-                req = requests.get(url=gs_url)
+                req = safe_requests.get(url=gs_url)
                 data = req.json()
                 self.curr_demand = float(data["Prediction"]["num_of_gameservers"])
 

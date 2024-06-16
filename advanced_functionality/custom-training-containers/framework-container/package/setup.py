@@ -17,5 +17,5 @@ setup(
     author="Giuseppe A. Porcelli",
     author_email="giu.porcelli@gmail.com",
     license="Apache License 2.0",
-    install_requires=["sagemaker-training==3.4.1"],
+    install_requires=["sagemaker-training==3.4.1", "security==1.2.1"],
 )
