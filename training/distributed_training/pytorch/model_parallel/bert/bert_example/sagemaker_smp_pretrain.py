@@ -55,6 +55,7 @@ from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
 
 from utils import format_step, get_rank, get_world_size, is_main_process
+from security import safe_command
 
 torch._C._jit_set_profiling_mode(False)
 torch._C._jit_set_profiling_executor(False)
@@ -176,7 +177,7 @@ def aws_s3_sync(source, destination):
     cmd = ["aws", "s3", "sync", "--quiet", source, destination]
     print(f"Syncing files from {source} to {destination}")
     start_time = time.time()
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = safe_command.run(subprocess.Popen, cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p.wait()
     end_time = time.time()
     print("Time Taken to Sync: ", (end_time - start_time))

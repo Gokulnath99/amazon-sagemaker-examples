@@ -4,6 +4,7 @@ import subprocess
 import sys
 
 from eplus.envs import pyEpError
+from security import safe_command
 
 
 class ep_process:
@@ -49,14 +50,13 @@ class ep_process:
         if os.name is "nt":  # windows
             eplus_script = eplus_path + "RunEplus"
             idf_path = building_path + "\\" + idf[:-4]
-            self.p = subprocess.Popen(
-                [eplus_script, idf_path, weather], stdout=log_file, shell=True, cwd=building_path
+            self.p = safe_command.run(subprocess.Popen, [eplus_script, idf_path, weather], stdout=log_file, shell=True, cwd=building_path
             )
         else:  # linux or mac
             eplus_script = eplus_path + "energyplus"
             idf_path = os.path.join(os.path.dirname(__file__), idf_file)
             weather_path = os.path.join(os.path.dirname(__file__), weather)
-            self.p = subprocess.Popen([eplus_script, "-w", weather_path, idf_path], stdout=log_file)
+            self.p = safe_command.run(subprocess.Popen, [eplus_script, "-w", weather_path, idf_path], stdout=log_file)
 
         print("Using E+ executable: " + eplus_script)
         print("Using IDF file: " + idf_file)

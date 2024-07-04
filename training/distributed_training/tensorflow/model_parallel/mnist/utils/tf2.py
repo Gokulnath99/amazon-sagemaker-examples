@@ -6,6 +6,7 @@ import time
 import smdistributed.modelparallel.tensorflow as smp
 import tensorflow as tf
 from tensorflow.keras.layers import Conv2D, Dense, Flatten
+from security import safe_command
 
 tf.random.set_seed(1234)
 
@@ -86,7 +87,7 @@ def aws_s3_sync(source, destination):
     cmd = ["aws", "s3", "sync", "--quiet", source, destination]
     print(f"Syncing files from {source} to {destination}")
     start_time = time.time()
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = safe_command.run(subprocess.Popen, cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p.wait()
     end_time = time.time()
     print("Time Taken to Sync: ", (end_time - start_time))

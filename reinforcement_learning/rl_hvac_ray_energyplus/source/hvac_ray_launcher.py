@@ -19,6 +19,7 @@ import ray
 from ray.tune.tune import _make_scheduler, run, run_experiments
 from sagemaker_rl.ray_launcher import SageMakerRayLauncher
 from sagemaker_rl.tf_serving_utils import export_tf_serving, natural_keys
+from security import safe_command
 
 TERMINATION_SIGNAL = "JOB_TERMINATED"
 MODEL_OUTPUT_DIR = "/opt/ml/model"
@@ -33,7 +34,7 @@ def custom_sync_func(source, target):
         )
     )
 
-    sync_process = subprocess.Popen(sync_cmd, shell=True)
+    sync_process = safe_command.run(subprocess.Popen, sync_cmd, shell=True)
     sync_process.wait()
 
 

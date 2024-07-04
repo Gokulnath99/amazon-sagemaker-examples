@@ -18,9 +18,10 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from security import safe_command
 
 logging.basicConfig(level=logging.DEBUG)
-logging.info(subprocess.call("ls -lR /opt/ml/input".split()))
+logging.info(safe_command.run(subprocess.call, "ls -lR /opt/ml/input".split()))
 
 
 import shap
@@ -309,9 +310,9 @@ if __name__ == "__main__":
     train(args)
 
     # Package inference code with model export
-    subprocess.call("mkdir /opt/ml/model/code".split())
-    subprocess.call("cp /opt/ml/code/inference.py /opt/ml/model/code/".split())
-    subprocess.call("cp columns.pkl /opt/ml/model/code/".split())
+    safe_command.run(subprocess.call, "mkdir /opt/ml/model/code".split())
+    safe_command.run(subprocess.call, "cp /opt/ml/code/inference.py /opt/ml/model/code/".split())
+    safe_command.run(subprocess.call, "cp columns.pkl /opt/ml/model/code/".split())
 
     elapsed_time = round(timer() - start, 3)
     print(f"Elapsed time: {elapsed_time} seconds. Training Completed!")
