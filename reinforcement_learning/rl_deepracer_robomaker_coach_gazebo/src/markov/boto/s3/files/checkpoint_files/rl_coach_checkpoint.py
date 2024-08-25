@@ -255,7 +255,7 @@ class RLCoachCheckpoint:
             # parse old coach checkpoint
             with open(self._old_local_path) as old_coach_checkpoint_file:
                 coach_checkpoint_value = re.findall(
-                    r'"(.*?)"', old_coach_checkpoint_file.readline()
+                    r'"(.*?)"', old_coach_checkpoint_file.readline(5_000_000)
                 )
             if len(coach_checkpoint_value) != 1:
                 log_and_exit(

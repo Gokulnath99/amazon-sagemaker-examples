@@ -103,7 +103,7 @@ def make_list(args):
 def read_list(path_in):
     with open(path_in) as fin:
         while True:
-            line = fin.readline()
+            line = fin.readline(5_000_000)
             if not line:
                 break
             line = [i.strip() for i in line.strip().split("\t")]
