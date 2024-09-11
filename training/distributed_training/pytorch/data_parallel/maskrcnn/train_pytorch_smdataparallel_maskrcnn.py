@@ -23,7 +23,6 @@ import argparse
 import functools
 import logging
 import os
-import random
 
 import numpy as np
 import smdistributed.dataparallel.torch.distributed as dist
@@ -44,6 +43,7 @@ from maskrcnn_benchmark.utils.miscellaneous import mkdir
 
 # Import SMDataParallel modules for PyTorch.
 from smdistributed.dataparallel.torch.parallel.distributed import DistributedDataParallel as DDP
+import secrets
 
 dist.init_process_group()
 
@@ -267,7 +267,7 @@ def main():
     print("dataset dir: ", args.data_dir)
 
     # Set seed to reduce randomness
-    random.seed(args.seed + dist.get_local_rank())
+    secrets.SystemRandom().seed(args.seed + dist.get_local_rank())
     np.random.seed(args.seed + dist.get_local_rank())
     torch.manual_seed(args.seed + dist.get_local_rank())
     torch.cuda.manual_seed(args.seed + dist.get_local_rank())

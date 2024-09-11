@@ -11,11 +11,11 @@ For more information, refer to https://docs.aws.amazon.com/sagemaker/latest/dg/t
 
 # Standard Library
 import argparse
-import random
 
 # Third Party
 import numpy as np
 import tensorflow.compat.v1 as tf
+import secrets
 
 # First Party
 # import smdebug.tensorflow as smd
@@ -46,7 +46,7 @@ args = parser.parse_args()
 if args.random_seed:
     tf.set_random_seed(2)
     np.random.seed(2)
-    random.seed(12)
+    secrets.SystemRandom().seed(12)
 
 # Network definition
 # Note the use of name scopes

@@ -1,7 +1,6 @@
 """This module implements concrete agent controllers for the rollout worker"""
 import math
 import os
-import random
 import threading
 
 import numpy as np
@@ -29,6 +28,7 @@ from markov.track_geom.spline.track_spline import TrackSpline
 from markov.track_geom.track_data import TrackData
 from markov.track_geom.utils import euler_to_quaternion
 from shapely.geometry import Point
+import secrets
 
 
 class BotCarsCtrl(AgentCtrlInterface, AbstractTracker):
@@ -137,7 +137,7 @@ class BotCarsCtrl(AgentCtrlInterface, AbstractTracker):
         lane_choices = (self.inner_lane, self.outer_lane)
         if self.randomize:
             i_bot_car = list(range(self.num_bot_cars))
-            random.shuffle(i_bot_car)
+            secrets.SystemRandom().shuffle(i_bot_car)
             for i in i_bot_car:
                 lo = (
                     bot_car_start_dist
@@ -150,11 +150,11 @@ class BotCarsCtrl(AgentCtrlInterface, AbstractTracker):
                     else bot_cars_initial_dists[i + 1] - self.min_bot_car_dist
                 )
                 if lo < hi:
-                    bot_cars_initial_dists[i] = random.uniform(lo, hi)
+                    bot_cars_initial_dists[i] = secrets.SystemRandom().uniform(lo, hi)
 
             # Select a random lane for each bot car
             for _ in bot_cars_initial_dists:
-                use_outer_lane = random.choice((False, True))
+                use_outer_lane = secrets.choice((False, True))
                 self.bot_cars_lane_splines.append(lane_choices[use_outer_lane])
                 self.bot_cars_opposite_lane_splines.append(lane_choices[not use_outer_lane])
         else:
@@ -195,7 +195,7 @@ class BotCarsCtrl(AgentCtrlInterface, AbstractTracker):
                 # Set the next lane change time
                 lane_change_end_time = self.bot_cars_lane_change_end_times[i_bot_car] = (
                     self.current_sim_time
-                    + random.uniform(self.lower_lane_change_time, self.upper_lane_change_time)
+                    + secrets.SystemRandom().uniform(self.lower_lane_change_time, self.upper_lane_change_time)
                     + self.lane_change_duration
                 )
                 lane_change_start_time = lane_change_end_time - self.lane_change_duration

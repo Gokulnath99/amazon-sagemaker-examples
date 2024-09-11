@@ -1,6 +1,6 @@
-from random import choice
 import numpy as np
 import pandas as pd
+import secrets
 
 
 NUM_HOUSES_PER_LOCATION = 1000
@@ -47,7 +47,7 @@ def generate_price(house):
 
 def generate_yes_no():
     """Generate values (y/n) for categorical features"""
-    answer = choice([1, 0])
+    answer = secrets.choice([1, 0])
     return answer
 
 

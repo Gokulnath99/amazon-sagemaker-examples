@@ -1,7 +1,6 @@
 import argparse
 import json
 import os
-import random
 from datetime import datetime
 
 import dgl
@@ -14,13 +13,14 @@ from sklearn.metrics import roc_auc_score
 from torch.nn import BCEWithLogitsLoss
 from torch.optim import Adam
 from torch.utils.data import DataLoader
+import secrets
 
 
 def setup(args, seed=0):
     args["device"] = "cuda" if torch.cuda.is_available() else "cpu"
 
     # Set random seed
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     if torch.cuda.is_available():

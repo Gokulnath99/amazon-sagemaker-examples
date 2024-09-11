@@ -7,7 +7,6 @@ import csv
 import glob
 import json
 import os
-import random
 import shutil
 import stat
 import sys
@@ -27,6 +26,7 @@ from sagemaker_containers.beta.framework import (
     transformer,
     worker,
 )
+import secrets
 
 model_artifacts_path = "/opt/ml/model/"
 feature_column = "words"
@@ -75,7 +75,7 @@ def get_agent_by_category_ddb(category):
         FilterExpression="#A = :v2",
         KeyConditionExpression="Specialty = :v1",
     )
-    pick = random.choice(response["Items"])
+    pick = secrets.choice(response["Items"])
     agent = {
         "ID": pick["ID"]["S"],
         "FirstName": pick["FirstName"]["S"],
@@ -97,7 +97,7 @@ def get_agent_by_category_naive(category):
     }
 
     if category in agents.keys():
-        return random.choice(agents[category])
+        return secrets.choice(agents[category])
     else:
         raise RuntimeError("Category {} is not supported by this script.".format(category))
 

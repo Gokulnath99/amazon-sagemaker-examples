@@ -1,5 +1,5 @@
 import json
-import random
+import secrets
 
 
 # sample preprocess_handler (to be implemented by customer)
@@ -11,10 +11,10 @@ def preprocess_handler(inference_record):
     input_data = {}
     output_data = {}
 
-    input_data["feature0"] = random.randint(1, 3)
-    input_data["feature1"] = random.uniform(0, 1.6)
-    input_data["feature2"] = random.uniform(0, 1.6)
+    input_data["feature0"] = secrets.SystemRandom().randint(1, 3)
+    input_data["feature1"] = secrets.SystemRandom().uniform(0, 1.6)
+    input_data["feature2"] = secrets.SystemRandom().uniform(0, 1.6)
 
-    output_data["prediction0"] = random.uniform(1, 30)
+    output_data["prediction0"] = secrets.SystemRandom().uniform(1, 30)
 
     return {**input_data, **output_data}

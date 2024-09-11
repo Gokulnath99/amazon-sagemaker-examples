@@ -2,7 +2,6 @@
 
 import abc
 import logging
-import random
 import time
 
 import boto3
@@ -10,6 +9,7 @@ import botocore
 from markov.boto.constants import BOTO_ERROR_MSG_FORMAT
 from markov.constants import CONNECT_TIMEOUT, NUM_RETRIES
 from markov.log_handler.logger import Logger
+import secrets
 
 LOG = Logger(__name__, logging.INFO).get_logger()
 
@@ -84,7 +84,7 @@ class DeepRacerBotoClient(object):
                 if try_count > self._max_retry_attempts:
                     raise e
                 # use exponential backoff
-                backoff_time = (pow(try_count, 2) + random.random()) * self._backoff_time_sec
+                backoff_time = (pow(try_count, 2) + secrets.SystemRandom().random()) * self._backoff_time_sec
                 error_message = BOTO_ERROR_MSG_FORMAT.format(
                     self._boto_client_name,
                     backoff_time,
