@@ -122,7 +122,7 @@ def get_prediction(region):
     try:
         # we get curr_demand from external endpoint denoted by gs_inventory_url. To simplfy things we make a local call to help function get_curr_sine1h() instead. In real life, uncomment the four lines below to populate authentic curr_demand
         gs_url = gs_inventory_url
-        req = requests.get(url=gs_url)
+        req = requests.get(url=gs_url, timeout=60)
         data = req.json()
         # data=get_curr_sine1h()
         curr_demand = float(data["Prediction"]["num_of_gameservers"])

@@ -63,7 +63,7 @@ class GameServerEnv(gym.Env):
             print("quering matchmaking service for current demand, curr_demand")
             try:
                 gs_url = self.gs_inventory_url
-                req = requests.get(url=gs_url)
+                req = requests.get(url=gs_url, timeout=60)
                 data = req.json()
                 self.curr_demand = float(data["Prediction"]["num_of_gameservers"])
 
