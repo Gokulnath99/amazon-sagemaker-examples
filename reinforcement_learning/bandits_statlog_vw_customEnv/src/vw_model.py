@@ -3,6 +3,7 @@ import os
 import subprocess
 
 import numpy as np
+from security import safe_command
 
 logger = logging.getLogger("vw_model.VWModel")
 logger.setLevel(logging.INFO)
@@ -73,8 +74,7 @@ class VWModel:
         # note bufsize=1 will make sure we immediately flush each output
         # line so that we can keep scoring the model.
         # bufsize=1 means line buffered.
-        self.current_proc = subprocess.Popen(
-            self.cmd,
+        self.current_proc = safe_command.run(subprocess.Popen, self.cmd,
             bufsize=1,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,

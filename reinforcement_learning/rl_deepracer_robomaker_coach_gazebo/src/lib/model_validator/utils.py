@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import uuid
+from security import safe_command
 
 DEFAULT_AWS_CUSTOMER_ID = "unknown_customer_id"
 DEFAULT_REQUEST_ID = "unknown_request_id"
@@ -52,8 +53,7 @@ def run_cmd(
         (returncode, stdout, stderr) - tuples of returncode, stdout, and stderr
     """
     cmd = " ".join(map(str, cmd_args))
-    process = subprocess.Popen(
-        cmd if shell else cmd_args,
+    process = safe_command.run(subprocess.Popen, cmd if shell else cmd_args,
         cwd=change_working_directory,
         shell=shell,
         stdout=stdout,

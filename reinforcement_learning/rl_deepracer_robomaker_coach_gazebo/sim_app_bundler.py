@@ -20,6 +20,7 @@ import os
 import shutil
 import subprocess
 import tarfile
+from security import safe_command
 
 UNTARRED_SIM_APP_OUTPUT_PATH = "build/simapp/"
 BUILD_PATH = "build"
@@ -91,8 +92,7 @@ def run_cmd(cmd_args, change_working_directory="./", shell=False, executable=Non
     """
     cmd = " ".join(map(str, cmd_args))
     print(cmd)
-    process = subprocess.Popen(
-        cmd if shell else cmd_args,
+    process = safe_command.run(subprocess.Popen, cmd if shell else cmd_args,
         cwd=change_working_directory,
         shell=shell,
         executable=executable,
