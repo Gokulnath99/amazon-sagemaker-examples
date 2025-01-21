@@ -6,7 +6,6 @@ import math
 
 # Standard Library
 import os
-import random
 import time
 
 # Third Party
@@ -22,6 +21,7 @@ from torch.cuda.amp import autocast
 from torch.optim.lr_scheduler import StepLR
 from torchnet.dataset import SplitDataset
 from torchvision import datasets, transforms
+import secrets
 
 # SM Distributed: import scaler from smdistributed.modelparallel.torch.amp, instead of torch.cuda.amp
 
@@ -243,7 +243,7 @@ def main():
     use_horovod = False
 
     # Fix seeds in order to get the same losses across runs
-    random.seed(1)
+    secrets.SystemRandom().seed(1)
     np.random.seed(1)
     torch.manual_seed(1)
     torch.cuda.manual_seed(1)

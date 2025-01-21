@@ -1,13 +1,13 @@
-import random
 import string
 from typing import Tuple
+import secrets
 
 
 def generate_random_string(size=8, chars=string.ascii_letters + string.digits) -> str:
     """
     generate a random string of given characters.
     """
-    return "".join(random.choice(chars) for _ in range(size))
+    return "".join(secrets.choice(chars) for _ in range(size))
 
 
 def generate_job_id_and_s3_path(
