@@ -24,6 +24,7 @@ import socket
 import subprocess
 import sys
 import time
+from security import safe_command
 
 
 def copy_files(src, dest):
@@ -167,8 +168,7 @@ TRAINER=horovod"""
 
     exitcode = 0
     try:
-        process = subprocess.Popen(
-            _cmd,
+        process = safe_command.run(subprocess.Popen, _cmd,
             encoding="utf-8",
             cwd="/mask-rcnn-tensorflow",
             shell=True,

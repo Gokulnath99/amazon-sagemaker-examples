@@ -25,6 +25,7 @@ import tempfile
 import time
 
 import boto3
+from security import safe_command
 
 IMAGE_TEMPLATE = "{account}.dkr.ecr.{region}.amazonaws.com/{image_name}:{version}"
 
@@ -161,7 +162,7 @@ def _tmpdir(suffix="", prefix="tmp", dir=None):  # type: (str, str, str) -> None
 def _execute(command, quiet=False):
     if not quiet:
         print("$ %s" % " ".join(command))
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process = safe_command.run(subprocess.Popen, command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         _stream_output(process)
     except RuntimeError as e:

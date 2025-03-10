@@ -8,6 +8,7 @@ import subprocess
 import sys
 import time
 from contextlib import contextmanager
+from security import safe_command
 
 
 def setup():
@@ -295,8 +296,7 @@ TRAINER=horovod"""
     print("--------End MPI Run Comamnd------------")
     exitcode = 0
     try:
-        process = subprocess.Popen(
-            mpirun_cmd,
+        process = safe_command.run(subprocess.Popen, mpirun_cmd,
             encoding="utf-8",
             cwd="/tensorpack",
             shell=True,

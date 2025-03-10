@@ -6,6 +6,7 @@ import os
 import subprocess
 import sys
 from argparse import REMAINDER, ArgumentParser
+from security import safe_command
 
 r"""
 `torch.distributed.launch` is a module that spawns up multiple distributed
@@ -292,7 +293,7 @@ def main():
 
         cmd.extend(args.training_script_args)
 
-        process = subprocess.Popen(cmd, env=current_env)
+        process = safe_command.run(subprocess.Popen, cmd, env=current_env)
         processes.append(process)
 
     for process in processes:
