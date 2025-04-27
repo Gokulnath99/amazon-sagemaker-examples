@@ -1,10 +1,10 @@
-import random
 import re
 import time
 
 import boto3
 import numpy as np
 import pandas as pd
+import secrets
 
 #################
 # Hyperparameters
@@ -21,7 +21,7 @@ class CategoricalParameter:
         self.values = values
 
     def get_value(self):
-        return random.choice(self.values)
+        return secrets.choice(self.values)
 
 
 class IntegerParameter:
@@ -35,7 +35,7 @@ class IntegerParameter:
         self.max_value = max_value
 
     def get_value(self):
-        return random.randint(self.min_value, self.max_value)
+        return secrets.SystemRandom().randint(self.min_value, self.max_value)
 
 
 class ContinuousParameter:
@@ -49,7 +49,7 @@ class ContinuousParameter:
         self.max_value = max_value
 
     def get_value(self):
-        return random.uniform(self.min_value, self.max_value)
+        return secrets.SystemRandom().uniform(self.min_value, self.max_value)
 
 
 ###############

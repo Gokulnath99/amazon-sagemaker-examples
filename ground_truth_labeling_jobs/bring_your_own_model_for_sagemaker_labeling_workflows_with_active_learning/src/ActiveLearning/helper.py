@@ -1,5 +1,5 @@
-import random
 from datetime import datetime
+import secrets
 
 AUTOANNOTATION_THRESHOLD = 0.50
 JOB_TYPE = "groundtruth/text-classification"
@@ -81,5 +81,5 @@ class SimpleActiveLearning:
         initial_ids = {prediction["id"] for prediction in predictions}
         autoannotation_ids = {autoannotation["id"] for autoannotation in autoannotations}
         remaining_ids = initial_ids - autoannotation_ids
-        selections = random.sample(remaining_ids, min(self.max_selections, len(remaining_ids)))
+        selections = secrets.SystemRandom().sample(remaining_ids, min(self.max_selections, len(remaining_ids)))
         return selections

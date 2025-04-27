@@ -29,7 +29,6 @@ import math
 import multiprocessing
 import os
 import pprint
-import random
 import subprocess
 import sys
 import time
@@ -55,6 +54,7 @@ from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
 
 from utils import format_step, get_rank, get_world_size, is_main_process
+import secrets
 
 torch._C._jit_set_profiling_mode(False)
 torch._C._jit_set_profiling_executor(False)
@@ -84,7 +84,7 @@ class WorkerInitObj(object):
 
     def __call__(self, id):
         np.random.seed(seed=self.seed + id)
-        random.seed(self.seed + id)
+        secrets.SystemRandom().seed(self.seed + id)
 
 
 def create_pretraining_dataset(input_file, max_pred_length, shared_list, args, worker_init):
@@ -791,7 +791,7 @@ def main():
 
     args = parse_arguments()
 
-    random.seed(args.seed + args.local_rank)
+    secrets.SystemRandom().seed(args.seed + args.local_rank)
     np.random.seed(args.seed + args.local_rank)
     torch.manual_seed(args.seed + args.local_rank)
     torch.cuda.manual_seed(args.seed + args.local_rank)
@@ -835,7 +835,7 @@ def main():
             ]
             files.sort()
             num_files = len(files)
-            random.Random(args.seed + epoch).shuffle(files)
+            secrets.SystemRandom().Random(args.seed + epoch).shuffle(files)
             f_start_id = 0
         else:
             f_start_id = checkpoint["files"][0]

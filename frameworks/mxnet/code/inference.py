@@ -22,6 +22,7 @@ import os
 import mxnet as mx
 import numpy as np
 from mxnet import gluon
+import secrets
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -67,9 +68,8 @@ if __name__ == "__main__":
     net = model_fn(model_dir)
 
     import json
-    import random
 
-    data = {"inputs": [random.random() for _ in range(784)]}
+    data = {"inputs": [secrets.SystemRandom().random() for _ in range(784)]}
     data = json.dumps(data)
 
     content_type = "application/json"

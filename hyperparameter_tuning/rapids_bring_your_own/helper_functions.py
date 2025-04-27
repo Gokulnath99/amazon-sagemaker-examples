@@ -15,11 +15,11 @@
 #
 
 import os
-import random
 import traceback
 import uuid
 
 import boto3
+import secrets
 
 
 def recommend_instance_type(code_choice, dataset_directory):
@@ -174,7 +174,7 @@ def new_job_name_from_config(
 
         # instance_type_str = '-'.join(instance_type.split('.')[1:])
 
-        random_str = "".join(random.choices(uuid.uuid4().hex, k=trim_limit))
+        random_str = "".join(secrets.SystemRandom().choices(uuid.uuid4().hex, k=trim_limit))
 
         job_name = (
             f"{data_choice_str}-{code_choice_str}"
