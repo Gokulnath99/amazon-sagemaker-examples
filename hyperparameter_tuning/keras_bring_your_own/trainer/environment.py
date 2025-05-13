@@ -39,7 +39,7 @@ INPUT_DATA_CONFIG_FILE = "inputdataconfig.json"
 
 def load_config(path):
     with open(path, "r") as f:
-        return yaml.load(f)
+        return yaml.load(f, Loader=yaml.SafeLoader)
 
 
 def load_hyperparameters():
