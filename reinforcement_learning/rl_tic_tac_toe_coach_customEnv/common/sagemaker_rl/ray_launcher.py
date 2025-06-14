@@ -12,6 +12,7 @@ from ray.tune import run_experiments
 from .configuration_list import ConfigurationList
 from .docker_utils import get_ip_from_host
 from .sage_cluster_communicator import SageClusterCommunicator
+from security import safe_command
 
 TERMINATION_SIGNAL = "JOB_TERMINATED"
 
@@ -161,8 +162,7 @@ class SageMakerRayLauncher(object):
         return config
 
     def start_ray_cluster(self, master_ip):
-        p = subprocess.Popen(
-            "ray start --head --redis-port=6379 --no-ui --node-ip-address=%s" % master_ip,
+        p = safe_command.run(subprocess.Popen, "ray start --head --redis-port=6379 --no-ui --node-ip-address=%s" % master_ip,
             shell=True,
             stderr=subprocess.STDOUT,
         )
@@ -171,8 +171,7 @@ class SageMakerRayLauncher(object):
             raise RuntimeError("Could not start Ray server.")
 
     def join_ray_cluster(self, master_ip, node_ip):
-        p = subprocess.Popen(
-            "ray start --redis-address=%s:6379 --node-ip-address=%s" % (master_ip, node_ip),
+        p = safe_command.run(subprocess.Popen, "ray start --redis-address=%s:6379 --node-ip-address=%s" % (master_ip, node_ip),
             shell=True,
             stderr=subprocess.STDOUT,
         )

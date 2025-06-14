@@ -22,6 +22,7 @@ from torch.cuda.amp import autocast
 from torch.optim.lr_scheduler import StepLR
 from torchnet.dataset import SplitDataset
 from torchvision import datasets, transforms
+from security import safe_command
 
 # SM Distributed: import scaler from smdistributed.modelparallel.torch.amp, instead of torch.cuda.amp
 
@@ -42,7 +43,7 @@ def aws_s3_sync(source, destination):
     cmd = ["aws", "s3", "sync", "--quiet", source, destination]
     print(f"Syncing files from {source} to {destination}")
     start_time = time.time()
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = safe_command.run(subprocess.Popen, cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p.wait()
     end_time = time.time()
     print("Time Taken to Sync: ", (end_time - start_time))

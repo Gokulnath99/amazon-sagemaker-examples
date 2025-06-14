@@ -7,6 +7,7 @@ import sys
 import time
 from shutil import copyfile
 from subprocess import PIPE, Popen
+from security import safe_command
 
 DASK_PATH = "/opt/conda/bin"
 
@@ -26,10 +27,10 @@ def start_daemons(master_ip):
     cmd_start_worker = os.path.join(DASK_PATH, "dask-worker")
     schedule_conn_string = "tcp://{ip}:8786".format(ip=master_ip)
     if current_host == scheduler_host:
-        Popen([cmd_start_scheduler])
-        Popen([cmd_start_worker, schedule_conn_string])
+        safe_command.run(Popen, [cmd_start_scheduler])
+        safe_command.run(Popen, [cmd_start_worker, schedule_conn_string])
     else:
-        worker_process = Popen([cmd_start_worker, schedule_conn_string])
+        worker_process = safe_command.run(Popen, [cmd_start_worker, schedule_conn_string])
 
 
 def get_ip_from_host(host_name):
@@ -71,7 +72,7 @@ if __name__ == "__main__":
         cmd_string = ["/opt/conda/bin/python", str(sys.argv[1])]
         cmd_string.extend(sys.argv[2:])
         cmd_string.append(scheduler_ip)
-        result = subprocess.Popen(cmd_string)
+        result = safe_command.run(subprocess.Popen, cmd_string)
         _ = result.communicate()[0]
         exit_code = result.returncode
     else:
