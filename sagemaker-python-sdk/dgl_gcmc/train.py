@@ -3,7 +3,6 @@ import argparse
 import json
 import logging
 import os
-import random
 import string
 import time
 
@@ -22,6 +21,7 @@ from utils import (
     params_clip_global_norm,
     parse_ctx,
 )
+import secrets
 
 
 class Net(Block):
@@ -299,7 +299,7 @@ if __name__ == "__main__":
         args.save_dir = (
             args.data_name
             + "_"
-            + "".join(random.choices(string.ascii_uppercase + string.digits, k=2))
+            + "".join(secrets.SystemRandom().choices(string.ascii_uppercase + string.digits, k=2))
         )
     if args.save_id is None:
         args.save_id = np.random.randint(20)

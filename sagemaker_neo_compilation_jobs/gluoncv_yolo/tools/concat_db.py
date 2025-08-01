@@ -15,9 +15,9 @@
 # specific language governing permissions and limitations
 # under the License.
 
-import random
 
 from imdb import Imdb
+import secrets
 
 
 class ConcatDB(Imdb):
@@ -69,7 +69,7 @@ class ConcatDB(Imdb):
             self.num_images += db.num_images
         indices = list(range(self.num_images))
         if shuffle:
-            random.shuffle(indices)
+            secrets.SystemRandom().shuffle(indices)
         return indices
 
     def _locate_index(self, index):
