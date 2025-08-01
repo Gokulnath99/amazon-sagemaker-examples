@@ -1,6 +1,6 @@
 import argparse
 import csv
-import random
+import secrets
 
 parser = argparse.ArgumentParser(description="Generate sample data")
 parser.add_argument("--samples", type=int, default=10000, help="Number of samples to generate")
@@ -37,14 +37,14 @@ sample_writer.writerow(["label", "words"])
 
 for i in range(args.samples):
     words = set()
-    specialty = random.choice(question_categories)
+    specialty = secrets.choice(question_categories)
     r = 1
     while r > 0.2:
         if r > 0.3:
-            words.add(random.choice(question_words[specialty]))
+            words.add(secrets.choice(question_words[specialty]))
         else:
-            words.add(random.choice(all_words))
-        r = random.random()
+            words.add(secrets.choice(all_words))
+        r = secrets.SystemRandom().random()
 
     sample = []
 

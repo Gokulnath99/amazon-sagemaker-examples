@@ -1,13 +1,13 @@
 # Standard Library
 import argparse
 import os
-import random
 
 # Third Party
 import mxnet as mx
 import numpy as np
 from mxnet import autograd, gluon
 from mxnet.gluon import nn
+import secrets
 
 
 def parse_args():
@@ -129,7 +129,7 @@ def validate():
 def main():
     opt = parse_args()
     mx.random.seed(128)
-    random.seed(12)
+    secrets.SystemRandom().seed(12)
     np.random.seed(2)
 
     context = mx.cpu() if opt.context.lower() == "cpu" else mx.gpu()
